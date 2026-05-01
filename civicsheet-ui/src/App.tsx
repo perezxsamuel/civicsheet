@@ -14,7 +14,7 @@ import {
 
 // Type definitions for the CivicSheet data structure
 interface Bill {
-  bill_id: string;
+  bill_id: string | number; // Can be string or number from Supabase
   title: string;
   status: string;
   last_action_date: string;
@@ -140,11 +140,11 @@ export default function App() {
         {/* Alignment Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {candidates.map((bill) => (
-            <div key={bill.bill_id} className="bg-white rounded-3xl p-1 shadow-sm border border-slate-200 hover:shadow-xl transition-all group">
+            <div key={String(bill.bill_id)} className="bg-white rounded-3xl p-1 shadow-sm border border-slate-200 hover:shadow-xl transition-all group">
               <div className="p-6">
                 <div className="flex justify-between items-start mb-6">
                   <div className="h-14 w-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xs font-black text-slate-400 group-hover:bg-blue-600 group-hover:text-white transition-all">
-                    {bill.bill_id.split('-')[0]}
+                    {String(bill.bill_id).split('-')[0]}
                   </div>
                   <div className="text-right">
                     <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase mb-1">
