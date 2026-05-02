@@ -53,10 +53,10 @@ export const SelectedFilters: React.FC<SelectedFiltersProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+    <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 mb-8">
       <div className="flex items-center gap-2 mb-6">
-        <Filter className="text-blue-600" size={20} />
-        <h2 className="text-lg font-bold text-slate-900">Current Selections</h2>
+        <Filter className="text-blue-600 dark:text-blue-400" size={20} />
+        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Policies & Selections</h2>
       </div>
 
       <div className="space-y-6">

@@ -9,14 +9,18 @@ import {
   Save,
   RotateCcw,
   CheckSquare,
-  Square
+  Square,
+  Moon,
+  Sun
 } from 'lucide-react';
+import { useDarkMode } from '../context/DarkModeContext';
 import { sessionStorage } from '../lib/sessionStorage';
 import { mockGroupAlignments } from '../lib/mockData';
-import { POLICIES_AND_CONCERNS, GROUPS_AND_ORGANIZATIONS } from '../lib/policiesAndGroups';
+import { POLICIES_AND_CONCERNS } from '../lib/policiesAndGroups';
 import type { UserPreferences } from '../types/alignment';
 
 export const Configuration: React.FC = () => {
+  const { isDark, toggleDarkMode } = useDarkMode();
   const [preferences, setPreferences] = useState<UserPreferences>(sessionStorage.getUserPreferences());
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -76,9 +80,9 @@ export const Configuration: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 transition-colors">
       {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-sm border-b border-slate-200/50 sticky top-0 z-20">
+      <nav className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-700/50 sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2 group">
             <ArrowLeft className="text-slate-600 group-hover:text-slate-900 transition-colors" size={20} />
@@ -86,6 +90,13 @@ export const Configuration: React.FC = () => {
           </Link>
 
           <div className="flex items-center gap-4">
+            <button
+              onClick={toggleDarkMode}
+              className="flex items-center gap-2 px-4 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+              title="Toggle dark mode"
+            >
+              {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
             {hasChanges && (
               <button
                 onClick={savePreferences}

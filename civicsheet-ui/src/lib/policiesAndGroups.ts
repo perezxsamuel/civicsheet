@@ -570,18 +570,23 @@ export function calculateAlignmentFromSelections(selectedPolicies: string[]): Al
     healthcare: 50
   };
 
-  // Count policies by category
-  const categoryCounts = {
+  // Count policies by category - match the AlignmentData fields
+  const categoryCounts: Record<string, number> = {
     economic: 0,
     social: 0,
     environmental: 0,
     infrastructure: 0,
-    healthcare: 0
+    healthcare: 0,
+    education: 0,
+    criminalJustice: 0,
+    immigration: 0,
+    technology: 0,
+    labor: 0
   };
 
   selectedPolicies.forEach(policyId => {
     const policy = POLICIES_AND_CONCERNS.find(p => p.id === policyId);
-    if (policy) {
+    if (policy && policy.category in categoryCounts) {
       categoryCounts[policy.category]++;
     }
   });

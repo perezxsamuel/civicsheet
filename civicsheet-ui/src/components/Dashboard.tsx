@@ -14,15 +14,12 @@ import { ComparisonSidebar } from './ComparisonSidebar';
 import { SelectedFilters } from './SelectedFilters';
 import { calculateMatchPercentage } from '../lib/matchPercentage';
 import { sessionStorage } from '../lib/sessionStorage';
-import { mockCandidates, mockGroupAlignments } from '../lib/mockData';
-import type { Candidate, GroupAlignment, UserPreferences, DemographicFilter } from '../types/alignment';
+import { mockCandidates } from '../lib/mockData';
+import type { Candidate, UserPreferences } from '../types/alignment';
 
 export const Dashboard: React.FC = () => {
   const [userPrefs] = useState<UserPreferences>(sessionStorage.getUserPreferences());
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate>(mockCandidates[0]);
-  const [selectedGroup, setSelectedGroup] = useState<GroupAlignment | undefined>(
-    userPrefs.selectedGroups.length > 0 ? mockGroupAlignments[userPrefs.selectedGroups[0]] : undefined
-  );
 
   // For demo purposes, start with first 2 candidates selected
   const getInitialSelectedCandidates = () => {
@@ -39,12 +36,6 @@ export const Dashboard: React.FC = () => {
     }))
     .sort((a, b) => (b.matchPercentage || 0) - (a.matchPercentage || 0));
 
-  const handleGroupChange = (filter: DemographicFilter) => {
-    const groupKey = `${filter.category}-${filter.value}`;
-    const group = mockGroupAlignments[groupKey];
-    setSelectedGroup(group);
-  };
-
   const getPartyColor = (party: string) => {
     switch (party) {
       case 'Democrat': return 'text-blue-600 bg-blue-50 border-blue-200';
@@ -55,13 +46,13 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 transition-colors">
       {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-sm border-b border-slate-200/50 sticky top-0 z-20">
+      <nav className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-700/50 sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2 group">
             <Target className="text-blue-600 group-hover:text-blue-700 transition-colors" size={28} />
-            <span className="text-2xl font-black text-slate-900 tracking-tighter uppercase italic">
+            <span className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter uppercase italic">
               CivicSheet
             </span>
           </Link>
@@ -95,12 +86,12 @@ export const Dashboard: React.FC = () => {
       <main className="max-w-7xl mx-auto p-6 lg:p-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-black text-slate-900 mb-2">
-            Your Political Alignment
+          <h1 className="text-4xl font-black text-slate-900 dark:text-white mb-2">
+            Candidate Alignment
           </h1>
-          <p className="text-lg text-slate-600 max-w-2xl">
-            Discover how candidates align with your selected policies and priorities.
-            Data-driven insights to help you make informed decisions.
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">
+            Compare how candidates and groups align with the policies and priorities you care about.
+            Transparent, data-driven insights to help you understand the issues.
           </p>
         </div>
 
@@ -128,7 +119,6 @@ export const Dashboard: React.FC = () => {
               userAlignment={userPrefs.alignment}
               candidateAlignment={selectedCandidate.alignment}
               candidateName={selectedCandidate.name}
-              groupAlignment={selectedGroup}
               className="h-full"
             />
           </div>
@@ -136,11 +126,9 @@ export const Dashboard: React.FC = () => {
           {/* Sidebar */}
           <div>
             <ComparisonSidebar
-              userAlignment={userPrefs.alignment}
-              candidateAlignment={selectedCandidate.alignment}
-              candidateName={selectedCandidate.name}
-              currentGroupAlignment={selectedGroup}
-              onGroupFilterChange={handleGroupChange}
+              selectedCandidate={selectedCandidate}
+              candidatesWithMatches={candidatesWithMatches}
+              onCandidateChange={setSelectedCandidate}
             />
           </div>
         </div>

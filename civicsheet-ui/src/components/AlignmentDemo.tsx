@@ -1,20 +1,14 @@
 import React, { useState } from 'react';
 import { RadarChartOverlay, ComparisonSidebar } from '../components';
-import { mockUserAlignment, mockCandidates, mockGroupAlignments } from '../lib/mockData';
-import type { DemographicFilter, GroupAlignment } from '../types/alignment';
+import { mockUserAlignment, mockCandidates } from '../lib/mockData';
 
 export const AlignmentDemo: React.FC = () => {
   const [selectedCandidate, setSelectedCandidate] = useState(mockCandidates[0]);
-  const [selectedGroup, setSelectedGroup] = useState<GroupAlignment | undefined>(
-    mockGroupAlignments['age-30-45']
-  );
 
-  const handleGroupFilterChange = (filter: DemographicFilter) => {
-    // Map filter to group alignment
-    const groupKey = `${filter.category}-${filter.value}`;
-    const groupAlignment = mockGroupAlignments[groupKey] || mockGroupAlignments['age-30-45'];
-    setSelectedGroup(groupAlignment);
-  };
+  const candidatesWithMatches = mockCandidates.map(c => ({
+    ...c,
+    matchPercentage: Math.random() * 100
+  }));
 
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-8">
@@ -51,18 +45,18 @@ export const AlignmentDemo: React.FC = () => {
             userAlignment={mockUserAlignment}
             candidateAlignment={selectedCandidate.alignment}
             candidateName={selectedCandidate.name}
-            groupAlignment={selectedGroup}
           />
         </div>
 
         {/* Sidebar - Takes up 1 column */}
         <div>
           <ComparisonSidebar
-            userAlignment={mockUserAlignment}
-            candidateAlignment={selectedCandidate.alignment}
-            candidateName={selectedCandidate.name}
-            currentGroupAlignment={selectedGroup}
-            onGroupFilterChange={handleGroupFilterChange}
+            selectedCandidate={selectedCandidate}
+            candidatesWithMatches={candidatesWithMatches.map(c => ({
+              ...c,
+              matchPercentage: Math.random() * 100
+            }))}
+            onCandidateChange={setSelectedCandidate}
           />
         </div>
       </div>

@@ -246,8 +246,7 @@ export const mockGroupAlignments: Record<string, GroupAlignment> = {
       'climate-change-action': 'support',
       'renewable-energy-transition': 'support',
       'environmental-regulations': 'support',
-      'public-lands-protection': 'support',
-      'renewable-energy-transition': 'support'
+      'public-lands-protection': 'support'
     }
   },
   'chamber-of-commerce': {
